@@ -38,7 +38,7 @@ This nightlight measures room darkness with a photoresistor and fades in red, ye
 
 ### Divider design
 
-The photoresistor sits on top, so the ADC code rises with light:
+ADC value rises with light.
 
 $$c = 4096 \cdot \frac{R_{DIV}}{R_{LDR} + R_{DIV}}$$
 
@@ -77,15 +77,15 @@ Because $\ln R$ is linear in $\ln L$, and light intensity is roughly logarithmic
 
 Average ADC sample output is converted to resistance:
 
-$$R = R_{DIV}\,\frac{4096 - c}{c}$$
+$$R = R_{DIV}\ \frac{4096 - c}{c}$$
 
 The resistance is converted to a "darkness" value to be normalized and processed by the 
 
-$$d = \operatorname{clamp}\!\left(\frac{\ln R - \ln R_{bright}}{\ln R_{dark} - \ln R_{bright}},\ 0,\ 1\right)$$
+$$d = \left(\frac{\ln R - \ln R_{bright}}{\ln R_{dark} - \ln R_{bright}},\ 0,\ 1\right)$$
 
-Darkness to stage $k = 0, 1, 2$:
+Darkness is converted to stage to stage $k = 0, 1, 2$:
 
-$$s_k = \operatorname{clamp}(3d - k,\ 0,\ 1), \qquad \text{CCR}_{k+1} = 65535 \cdot s_k$$
+$$s_k = (3d - k,\ 0,\ 1), \qquad \text{CCR}_{k+1} = 65535 \cdot s_k$$
 
 Calibration: $R_{bright}$ = 2000 Ω, $R_{dark}$ = 8000 Ω.
 
@@ -94,10 +94,10 @@ Calibration: $R_{bright}$ = 2000 Ω, $R_{dark}$ = 8000 Ω.
 | Constant | Value | Rationale |
 |:-|:-|:-|
 | System clock | 180 MHz from internal HSI | Maximum rated speed |
-| ADC clock | 22.5 MHz (PCLK2 / 4) | Fastest sample setting |
+| ADC clock | 22.5 MHz  | Fastest sample setting |
 | Sampling rate | 1200 Hz | 60 samples per 50 ms |
 | ADC sample time | 480 cycles | Arbitrary |
-| Buffer | 120 samples, two halves | 20 Hz update rate. CPU reads the half DMA does not write to.|
+| Buffer | 120 samples, two halves | 20 Hz update rate. CPU reads the half DMA, other half is being written to.|
 | PWM frequency | 1373 Hz | Arbitrary |
 | Filtering | 60-sample average only | Average sample reduces jitter in PWM|
 | LED color order | Red, Yellow, Green | Based on what humans best see in different levels of light |
@@ -216,7 +216,7 @@ $$\text{tol}(n) = \lceil 21.4 + 0.005\,n \rceil\ \text{LSB}$$
 
 ## Obstacles
 
-The first run of the DAC  self-test failed. The DAC stepped from 300 to 3800, but the ADC read about 1699 counts for all nine steps. A reading that does not move at all while the input sweeps the full range meant the ADC was not looking at the DAC. 1699 counts corresponds to about 21 kΩ on the 15 kΩ divider, a normal room-light value for the photoresistor, so the ADC was most likely still sampling PA0 instead of PA4. Covering the sensor shifted the "measured" values, which confirmed it. In the STM32CubeIDE SFR view, ADC1_SQR3.SQ1 read 0 instead of 4.
+The first run of the DAC  self-test failed. The DAC stepped from 300 to 3800, but the ADC read about 1699 counts for all nine steps. Since the reading did not  not move at all while the input sweeps the full range it meant that the the ADC was not looking at the DAC. 1699 counts corresponds to about 21 kΩ on the 15 kΩ divider, a normal room-light value for the photoresistor, so the ADC was most likely still sampling PA0 instead of PA4. Covering the sensor shifted the "measured" values, which confirmed it. In the STM32CubeIDE SFR view, ADC1_SQR3.SQ1 read 0 instead of 4.
 
 The code that switches rank 1 to channel 4 was in `USER CODE BEGIN ADC1_Init 1`. That block runs before `HAL_ADC_Init` and before CubeMX's generated channel 0 configuration, so the generated code silently overwrote my setting every boot. 
 
