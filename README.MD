@@ -18,10 +18,10 @@ This nightlight measures room darkness with a photoresistor and fades in red, ye
 |:-|:-|:-|
 | LDR1 | Photoresistor | Characterized below |
 | R1 | Divider resistor | 15 kΩ |
-| R2, R3, R4 | LED series resistors | TODO Ω |
-| LED1 | Stage 1 LED | TODO color |
-| LED2 | Stage 2 LED | TODO color |
-| LED3 | Stage 3 LED | TODO color |
+| R2, R3, R4 | LED series resistors | 330 Ω |
+| LED1 | Stage 1 LED | Red color |
+| LED2 | Stage 2 LED | Yellow color |
+| LED3 | Stage 3 LED | Green color |
 
 ### Pin map
 
