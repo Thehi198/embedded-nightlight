@@ -1,0 +1,15 @@
+../Core/Src/main.c:104:17:st_tolerance	1
+../Core/Src/main.c:109:13:selftest_step	5
+../Core/Src/main.c:137:14:stage	3
+../Core/Src/main.c:145:13:process_half	4
+../Core/Src/main.c:173:6:HAL_ADC_ConvHalfCpltCallback	2
+../Core/Src/main.c:178:6:HAL_ADC_ConvCpltCallback	2
+../Core/Src/main.c:189:5:main	4
+../Core/Src/main.c:260:6:SystemClock_Config	4
+../Core/Src/main.c:315:13:MX_ADC1_Init	4
+../Core/Src/main.c:373:13:MX_DAC_Init	3
+../Core/Src/main.c:413:13:MX_TIM2_Init	4
+../Core/Src/main.c:458:13:MX_TIM3_Init	8
+../Core/Src/main.c:523:13:MX_DMA_Init	1
+../Core/Src/main.c:541:13:MX_GPIO_Init	1
+../Core/Src/main.c:565:6:Error_Handler	1
