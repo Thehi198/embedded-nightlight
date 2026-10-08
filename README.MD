@@ -79,9 +79,11 @@ Average ADC sample output is converted to resistance:
 
 $$R = R_{DIV}\ \frac{4096 - c}{c}$$
 
-The resistance is converted to a "darkness" value to be normalized and processed by the 
+The resistance is converted to a "darkness" value to be normalized and processed by the stage function
 
-$$d = \left(\frac{\ln R - \ln R_{bright}}{\ln R_{dark} - \ln R_{bright}},\ 0,\ 1\right)$$
+$$d = \frac{\ln R - \ln R_{bright}}{\ln R_{dark} - \ln R_{bright}}$$
+
+This value was clamped betwene 0 and 1
 
 Darkness is converted to stage to stage $k = 0, 1, 2$:
 
@@ -104,7 +106,7 @@ Calibration: $R_{bright}$ = 2000 Ω, $R_{dark}$ = 8000 Ω.
 
 ## Register Trace
 
-Each CubeMX setting and the register field it writes. HAL source was used to find the fields; each was verified against RM0390.
+Each CubeMX setting and the register field it writes. HAL source was used to find the fields
 
 ### ADC1
 
